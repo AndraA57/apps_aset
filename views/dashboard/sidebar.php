@@ -1,23 +1,22 @@
 <?php
-// Mengambil kunci pertama dari URL (seperti 'pegawai' dari ?pegawai)
-$keys = array_keys($_GET);
-$page_aktif = $keys[0] ?? 'beranda';
+$pg = $_GET['pg'] ?? '';
+$fl = $_GET['fl'] ?? '';
 
 // Tentukan judul yang tampil di Sidebar Brand
-$judul_tampil = isset($judul) ? $judul : "Pasundan Aset";
+$judul_tampil = isset($AppNameShort) ? $AppNameShort : "Management Aset";
 ?>
 
 <aside id="sidebar">
     <div class="sidebar-header">
-        <div class="brand-logo">
-            <img src="assets/img/pass.svg" alt="Logo" width="32" height="32">
+       <div>
+            <img src="assets/img/logo.png" alt="Logo" width="42" height="42">
         </div>
         <span class="brand-text fw-bold"><?php echo $judul_tampil; ?></span>
     </div>
 
     <div class="d-flex flex-column flex-grow-1 overflow-auto custom-scrollbar">
         
-        <a href="index.php?beranda" class="nav-link-custom <?php echo ($page_aktif == 'beranda') ? 'active' : ''; ?>">
+        <a href="index.php?pg=&fl=" class="nav-link-custom <?php echo ($pg == '' || $pg == 'beranda') ? 'active' : ''; ?>">
             <i data-lucide="house"></i> Beranda
         </a>
 
@@ -26,11 +25,5 @@ $judul_tampil = isset($judul) ? $judul : "Pasundan Aset";
         <?php include('menu/staf_aset.php') ?>
         <?php include('menu/teknisi.php') ?>
         
-    </div>
-
-    <div class="sidebar-footer border-top p-3">
-        <a href="index.php?logout" class="nav-link-custom text-danger border-0">
-            <i data-lucide="log-out"></i> Keluar
-        </a>
     </div>
 </aside>

@@ -1,26 +1,28 @@
 <?php
-// Samakan logika dengan sidebar.php
-$keys = array_keys($_GET);
-$page_aktif = $keys[0] ?? 'beranda';
+$pg = $_GET['pg'] ?? '';
+$fl = $_GET['fl'] ?? '';
 
 // Daftar judul yang sama agar konsisten
 $daftar_judul = [
     'beranda'        => 'Nexus Core',
-    'pegawai'        => 'Kelola Pegawai',
-    'tambah_pegawai' => 'Tambah Pegawai',
-    'editpegawai'    => 'Edit Data Pegawai',
-    'pengelola'      => 'Pengelola Aset',
-    'aset'           => 'Kelola Aset',
-    'serah_terima'   => 'Serah Terima Aset',
-    'peminjaman'     => 'Peminjaman',
-    'penghapusan'    => 'Penghapusan Aset',
-    'pengembalian'   => 'Pengembalian',
+    'kpegawai'       => 'Kelola Pegawai',
+    'kpengelola'     => 'Pengelola Aset',
+    'kaset'          => 'Kelola Aset',
+    'kserte'         => 'Serah Terima Aset',
+    'kpeminjaman'    => 'Peminjaman',
+    'khapus'         => 'Penghapusan Aset',
+    'kpengembalian'  => 'Pengembalian',
     'maintenance'    => 'Pemeliharaan',
-    'perbaikan'      => 'Perbaikan'
+    'perbaikan'      => 'Perbaikan',
+    'kkategori'      => 'Kelola Kategori',
+    'klokasi'        => 'Lokasi'
 ];
 
-// Tentukan judul untuk header
-$judul_header = $daftar_judul[$page_aktif] ?? "Nexus Core";
+// Tentukan judul untuk header berdasarkan pg (atau fl jika staf/teknisi)
+$judul_key = ($pg == 'staf_aset' || $pg == 'teknisi') ? $fl : $pg;
+if ($judul_key == '') $judul_key = 'beranda';
+
+$judul_header = $daftar_judul[$judul_key] ?? "Dashboard";
 ?>
 
 <header class="d-flex justify-content-between align-items-center">
@@ -39,29 +41,32 @@ $judul_header = $daftar_judul[$page_aktif] ?? "Nexus Core";
     </div>
 
     <div class="d-flex align-items-center gap-4">
-        <div class="d-none d-md-block text-muted cursor-pointer hover-dark">
-            <i data-lucide="search" size="20"></i>
-        </div>
         
-        <div class="position-relative cursor-pointer">
-            <i data-lucide="bell" size="20" class="text-muted"></i>
-            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-        </div>
-
         <div class="dropdown">
             <div class="d-flex align-items-center gap-3 cursor-pointer" data-bs-toggle="dropdown">
                 <div class="text-end d-none d-sm-block">
-                    <p class="mb-0 fw-bold small"><?php echo $_SESSION['nama'] ?? 'Alex Morgan'; ?></p>
+                    <p class="mb-0 fw-bold small">
+                        <?php echo isset($_SESSION['nama']) ? $_SESSION['nama'] : 'Guest'; ?>
+                    </p>
                     <p class="mb-0 text-muted text-uppercase fw-bold" style="font-size: 0.6rem; letter-spacing: 0.5px;">
-                        <?php echo $_SESSION['role'] ?? 'Super Admin'; ?>
+                        <?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'User'; ?>
                     </p>
                 </div>
-                <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['nama'] ?? 'User'); ?>&background=4f46e5&color=fff" 
-                     width="40" height="40" class="rounded-circle border border-2 border-white shadow-sm">
-            </div>
+                <?php
+                if (!empty($_SESSION['foto']) && file_exists('assets/img/pegawai/' . $_SESSION['foto'])) {
+                    $img_src = 'assets/img/pegawai/' . $_SESSION['foto'];
+                } else {
+                    $img_src = 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['nama'] ?? 'User') . '&background=4f46e5&color=fff';
+                }
+                ?>
+                <img src="<?php echo $img_src; ?>" 
+                     width="40" height="40" class="rounded-circle border border-2 border-white shadow-sm" style="object-fit: cover;">
+                </div>
 
             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
-                <li><a class="dropdown-item" href="index.php?logout"><i data-lucide="log-out" size="16"></i> Logout</a></li>
+                <li><a class="dropdown-item py-2" href="index.php?pg=user&fl=profile"><i data-lucide="user" style="width: 16px;" class="me-2 text-muted"></i>Profil Saya</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item py-2 text-danger" href="index.php?pg=logout"><i data-lucide="log-out" style="width: 16px;" class="me-2"></i> Logout</a></li>
             </ul>
         </div>
     </div>

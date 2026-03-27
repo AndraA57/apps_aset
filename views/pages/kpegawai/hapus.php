@@ -20,16 +20,16 @@ if (isset($_GET['id'])) {
                 alert('Data pegawai berhasil dihapus!');
                 // Redirect kembali ke halaman index utama
                 // Sesuaikan jumlah '../' agar kembali ke root folder tempat index.php berada
-                window.location = '../../../../index.php?pegawai'; 
+                window.location = '../../../../index.php?pg=kpegawai&fl=list'; 
               </script>";
     } else {
         echo "<script>
                 alert('Gagal menghapus data: " . mysqli_error($koneksi) . "');
-                window.location = '../../../../index.php?pegawai';
+                window.location = '../../../../index.php?pg=kpegawai&fl=list';
               </script>";
     }
 } else {
     // Jika tidak ada ID, kembalikan saja
-    echo "<script>window.location = '../../../../index.php?pegawai';</script>";
+    echo "<script>window.location = '../../../../index.php?pg=kpegawai&fl=list';</script>";
 }
 ?>

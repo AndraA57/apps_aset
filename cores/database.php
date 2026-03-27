@@ -3,7 +3,7 @@
 $host     = "localhost";
 $user     = "root";
 $password = "";
-$database = "db_asset"; // Ganti dengan nama database kamu
+$database = "db_asset";
 
 // Mengaktifkan pelaporan error untuk mysqli (sangat berguna saat debugging)
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
